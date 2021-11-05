@@ -3,7 +3,7 @@
 // 类装饰器接受的参数是构造函数
 // 装饰器通过 @ 符号来使用
 
-function testDecorator(flag: boolean) {
+function testDecorator1(flag: boolean) {
   if (flag) {
     return function (constructor: any) {
       constructor.prototype.getName = () => {
@@ -15,7 +15,7 @@ function testDecorator(flag: boolean) {
   }
 }
 
-@testDecorator(true)
+@testDecorator1(true)
 class Test1 { }
 
 const test1 = new Test1();
