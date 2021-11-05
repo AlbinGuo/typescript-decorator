@@ -1,31 +1,29 @@
 /**
- * 类的装饰器 [ 类创建的时候执行，不是实例化的时候执行 ]
- * - 装饰器通过 @ 符号来使用
- * - 类装饰器接受的参数是构造函数
- * - tsconfig.json中开放出experimentalDecorators 和 emitDecoratorMetadata的注释
- * - 执行顺序：多个装饰器：从下到上，或从右向左执行
+ * 函数装饰器
  */
-function testDecorator() {
-  return function <T extends new (...args: any[]) => {}>(constructor: T) {
-    return class extends constructor {
-      name = 'guonan====';
-      getName() {
-        return this.name;
-      }
-    };
+
+function getNameDecorator(target: any, key: string, descriptor: PropertyDescriptor) {
+  descriptor.writable = true;
+  // descriptor.value = function () {
+  //   return '====deeded====';
+  // }
+
+}
+
+class Student {
+  name: string;
+  constructor(name: string) {
+    this.name = name;
+  }
+  @getNameDecorator
+  getName(): string {
+    return this.name;
   }
 }
 
-
-
-const Test = testDecorator()(
-  class {
-    name: string;
-    constructor(name: string) {
-      this.name = name;
-    }
-  }
-)
-
-const test = new Test('===guoguo==');
-console.log(test.getName())
+const stu = new Student('常山赵子龙');
+// stu.getName = function () {
+//   return '===张三====';
+// }
+console.log("---", stu.getName());
+;
