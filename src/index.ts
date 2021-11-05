@@ -5,22 +5,27 @@
  * - tsconfig.json中开放出experimentalDecorators 和 emitDecoratorMetadata的注释
  * - 执行顺序：多个装饰器：从下到上，或从右向左执行
  */
-function testDecorator(flag: boolean) {
-  if (flag) {
-    return (constructor: any) => {
-      constructor.prototype.getName = () => {
-        console.log('this is a test name')
+function testDecorator() {
+  return function <T extends new (...args: any[]) => {}>(constructor: T) {
+    return class extends constructor {
+      name = 'guonan====';
+      getName() {
+        return this.name;
       }
-    }
-  } else {
-    return (constructor: any) => { }
+    };
   }
-
 }
 
 
-@testDecorator(false)
-class Test {
-}
-const test = new Test();
-(test as any).getName();
+
+const Test = testDecorator()(
+  class {
+    name: string;
+    constructor(name: string) {
+      this.name = name;
+    }
+  }
+)
+
+const test = new Test('===guoguo==');
+console.log(test.getName())
